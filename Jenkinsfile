@@ -4,7 +4,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'I am in docker'
-                sh "./gradlew build ."
+                sh "./gradlew build"
             }
         } 
     }
