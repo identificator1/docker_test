@@ -1,8 +1,8 @@
 FROM openjdk:8-jdk
 
-#####
+####
 USER root:root
-######
+####
 
 ARG user=jenkins
 ARG group=jenkins
@@ -20,11 +20,14 @@ RUN curl --create-dirs -sSLo /usr/share/jenkins/slave.jar https://repo.jenkins-c
   && chmod 755 /usr/share/${user} \
   && chmod 644 /usr/share/${user}/slave.jar
 
-RUN rm /var/lib/dpkg/lock
+
+#RUN rm /var/lib/dpkg/lock
+RUN dpkg --add-architecture i386
 
 ####
 USER ${user}
 ####
+
 ENV AGENT_WORKDIR=${AGENT_WORKDIR}
 RUN mkdir /home/${user}/.jenkins && mkdir -p ${AGENT_WORKDIR}
 VOLUME /home/${user}/.jenkins
@@ -34,7 +37,6 @@ ENV GRADLE_VERSION 4.4
 ENV ANDROID_SDK_VERSION 3859397
 ENV ANDROID_SDK_PATH /usr/local/bin/android-sdk
 ENV ANDROID_API_LEVELS "platforms;android-19" "platforms;android-20" "platforms;android-21" "platforms;android-22" "platforms;android-23" "platforms;android-24" "platforms;android-25" "platforms;android-26" "platforms;android-27"
-RUN dpkg --add-architecture i386
 RUN apt-get update -y
 RUN apt-get install -y lib32z1 libc6:i386 libncurses5:i386 libstdc++6:i386 expect
 
