@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'dockerfile'}
+    agent { label 'docker'}
     stages {
         stage('Build') {
             agent { docker 'jacekmarchwicki/android'}
