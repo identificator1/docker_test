@@ -1,5 +1,7 @@
 FROM openjdk:8-jdk
 
+USER root:root
+
 RUN apt-get update && apt-get install -y git curl && rm -rf /var/lib/apt/lists/*
 
 ARG user=jenkins
@@ -35,12 +37,12 @@ ENV JENKINS_UC https://updates.jenkins.io
 ENV JENKINS_UC_EXPERIMENTAL=https://updates.jenkins.io/experimental
 RUN chown -R ${user} "$JENKINS_HOME" /usr/share/jenkins/ref
 
---------------
-USER root
-RUN mkdir /var/log/jenkins
-RUN mkdir /var/cache/jenkins
-RUN chown -R jenkins:jenkins /var/log/jenkins
-RUN chown -R jenkins:jenkins /var/cache/jenkins
+####
+
+RUN mkdir /var/log/${user}
+RUN mkdir /var/cache/${user}
+RUN chown -R ${user}:${user} /var/log/${user}
+RUN chown -R ${user}:${user} /var/cache/${user}
  
 RUN apt-get update && apt-get install -y apt-transport-https
 RUN apt-get -q -y install lsof
@@ -57,5 +59,5 @@ RUN apt-get install git-core
 RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | /opt/android-sdk-linux/tools/android update sdk --no-ui --filter platform-tools,android-24,build-tools-24.0.1,tools,extra-android-support,extra-android-m2repository
 RUN chmod -R 755 /opt/android-sdk-linux
 RUN dpkg --add-architecture i386
-USER jenkins
+USER ${user}:${user}
 ENV JAVA_OPTS="-Xmx8192m"
