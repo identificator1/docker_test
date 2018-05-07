@@ -1,66 +1,61 @@
 FROM openjdk:8-jdk
 
-####
-USER root:root
-####
+RUN apt-get update && apt-get install -y git curl && rm -rf /var/lib/apt/lists/*
 
 ARG user=jenkins
 ARG group=jenkins
-ARG uid=10000
-ARG gid=10000
-ENV HOME /home/${user}
+ARG uid=1000
+ARG gid=1000
+ARG http_port=8080
+ARG agent_port=50000
 
-RUN groupadd -g ${gid} ${group}
-RUN useradd -c "Jenkins user" -d $HOME -u ${uid} -g ${gid} -m ${user}
+ENV JENKINS_HOME /var/jenkins_home
+ENV JENKINS_SLAVE_AGENT_PORT ${agent_port}
 
-LABEL Description="This is a base image, which provides the Jenkins agent executable (slave.jar)" Vendor="Jenkins project" Version="3.20"
-ARG VERSION=3.20 
-ARG AGENT_WORKDIR=/home/${user}/agent
-RUN curl --create-dirs -sSLo /usr/share/jenkins/slave.jar https://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/${VERSION}/remoting-${VERSION}.jar \
-  && chmod 755 /usr/share/${user} \
-  && chmod 644 /usr/share/${user}/slave.jar
+# Jenkins is run with user `jenkins`, uid = 1000
+# If you bind mount a volume from the host or a data container,
+# ensure you use the same uid
+RUN groupadd -g ${gid} ${group} \
+    && useradd -d "$JENKINS_HOME" -u ${uid} -g ${gid} -m -s /bin/bash ${user}
 
-RUN dpkg --add-architecture i386 && \
-    apt-get update -y && \
-    apt-get install -y lib32z1 libc6:i386 libncurses5:i386 libstdc++6:i386 expect
-    
-ENV GRADLE_VERSION 4.4
-ENV ANDROID_SDK_VERSION 3859397
-ENV ANDROID_SDK_PATH /usr/local/bin/android-sdk
-ENV ANDROID_API_LEVELS "platforms;android-19" "platforms;android-20" "platforms;android-21" "platforms;android-22" "platforms;android-23" "platforms;android-24" "platforms;android-25" "platforms;android-26" "platforms;android-27"
+# Jenkins home directory is a volume, so configuration and build history
+# can be persisted and survive image upgrades
+VOLUME /var/jenkins_home
 
-#FROM /
-#COPY bin /usr/local/bin
-#RUN chmod 755 /usr/local/bin/docker-android-sdk-install
-RUN mkdir -p ${ANDROID_SDK_PATH}
+# `/usr/share/jenkins/ref/` contains all reference configuration we want
+# to set on a fresh new installation. Use it to bundle additional plugins
+# or config file with your custom jenkins Docker image.
+RUN mkdir -p /usr/share/jenkins/ref/init.groovy.d
 
-RUN wget https://dl.google.com/android/repository/sdk-tools-linux-${ANDROID_SDK_VERSION}.zip && \
-    unzip sdk-tools-linux-${ANDROID_SDK_VERSION}.zip && \
-    mv tools ${ANDROID_SDK_PATH} && \
-    rm sdk-tools-linux-${ANDROID_SDK_VERSION}.zip
+COPY init.groovy /usr/share/jenkins/ref/init.groovy.d/tcp-slave-agent-port.groovy
 
-RUN wget https://downloads.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip && \
-    mkdir /opt/gradle && \
-    unzip -d /opt/gradle gradle-${GRADLE_VERSION}-bin.zip && \
-    rm gradle-${GRADLE_VERSION}-bin.zip
+# could use ADD but this one does not check Last-Modified header neither does it allow to control checksum
+# see https://github.com/docker/docker/issues/8331
+ENV JENKINS_UC https://updates.jenkins.io
+ENV JENKINS_UC_EXPERIMENTAL=https://updates.jenkins.io/experimental
+RUN chown -R ${user} "$JENKINS_HOME" /usr/share/jenkins/ref
 
-ENV ANDROID_HOME /usr/local/bin/android-sdk
-ENV PATH $PATH:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools:/opt/gradle/gradle-${GRADLE_VERSION}/bin
-
-RUN mkdir ~/.android && touch ~/.android/repositories.cfg
-
-#RUN docker-android-sdk-install "platform-tools" ${ANDROID_API_LEVELS}
-
-RUN rm -rf /var/lib/apt/lists/* && \
-    apt-get autoremove -y && \
-    apt-get clean
-
-####
-USER ${user}:${user}
-####
-ENV AGENT_WORKDIR=${AGENT_WORKDIR}
-RUN mkdir /home/${user}/.jenkins && mkdir -p ${AGENT_WORKDIR}
-VOLUME /home/${user}/.jenkins
-VOLUME ${AGENT_WORKDIR}
-WORKDIR /home/${user}
+--------------
+USER root
+RUN mkdir /var/log/jenkins
+RUN mkdir /var/cache/jenkins
+RUN chown -R jenkins:jenkins /var/log/jenkins
+RUN chown -R jenkins:jenkins /var/cache/jenkins
+ 
+RUN apt-get update && apt-get install -y apt-transport-https
+RUN apt-get -q -y install lsof
+ 
+RUN wget https://dl.google.com/android/android-sdk_r24.4.1-linux.tgz -O /opt/android-sdk.tgz
+RUN tar zxvf /opt/android-sdk.tgz -C /opt/
+RUN rm /opt/android-sdk.tgz
+ 
+RUN >/etc/profile.d/android.sh
+RUN sed -i '$ a\export ANDROID_HOME="/opt/android-sdk-linux"' /etc/profile.d/android.sh
+RUN sed -i '$ a\export PATH="$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$PATH"' /etc/profile.d/android.sh
+RUN . /etc/profile
+RUN apt-get install git-core
+RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | /opt/android-sdk-linux/tools/android update sdk --no-ui --filter platform-tools,android-24,build-tools-24.0.1,tools,extra-android-support,extra-android-m2repository
+RUN chmod -R 755 /opt/android-sdk-linux
+RUN dpkg --add-architecture i386
+USER jenkins
 ENV JAVA_OPTS="-Xmx8192m"
