@@ -11,7 +11,8 @@ pipeline {
             steps {
                 echo 'I am in docker'
                 sh "hostname"
-                sh "./gradlew test"
+                sh "git clone https://github.com/codepath/intro_android_demo && cd intro_android_demo"
+                sh "./gradlew build"
             }
         } 
     }
