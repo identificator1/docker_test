@@ -13,7 +13,7 @@ RUN useradd -c "Jenkins user" -d $HOME -u ${uid} -g ${gid} -m ${user}
 
 LABEL Description="This is a base image, which provides the Jenkins agent executable (slave.jar)" Vendor="Jenkins project" Version="3.20"
 ARG VERSION=3.20 
-ARG AGENT_WORKDIR=/home/${user}/agent 
+ARG AGENT_WORKDIR=/home/${user}/agent
 RUN curl --create-dirs -sSLo /usr/share/jenkins/slave.jar https://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/${VERSION}/remoting-${VERSION}.jar \
   && chmod 755 /usr/share/${user} \
   && chmod 644 /usr/share/${user}/slave.jar
@@ -28,9 +28,9 @@ ENV ANDROID_SDK_VERSION 3859397
 ENV ANDROID_SDK_PATH /usr/local/bin/android-sdk
 ENV ANDROID_API_LEVELS "platforms;android-19" "platforms;android-20" "platforms;android-21" "platforms;android-22" "platforms;android-23" "platforms;android-24" "platforms;android-25" "platforms;android-26" "platforms;android-27"
 
-RUN dpkg --add-architecture i386 && \
-    apt-get update -y && \
-    apt-get install -y lib32z1 libc6:i386 libncurses5:i386 libstdc++6:i386 expect
+RUN dpkg --add-architecture i386
+RUN apt-get update -y
+RUN apt-get install -y lib32z1 libc6:i386 libncurses5:i386 libstdc++6:i386 expect
 
 COPY bin /usr/local/bin
 RUN chmod 755 /usr/local/bin/docker-android-sdk-install
