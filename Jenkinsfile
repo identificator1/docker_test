@@ -5,7 +5,6 @@ pipeline {
             steps {
                 echo 'Local hostname is'
                 sh "hostname"
-                sh "touch host.txt"
             }
         }
         stage('Build') {
@@ -13,8 +12,8 @@ pipeline {
             steps {
                 echo 'I am in a docker container, its hostname is'
                 sh "hostname"
-                sh "ls"
                 sh "git clone https://github.com/codepath/intro_android_demo && cd intro_android_demo"
+                sh "android list sdk -a -e"
                 sh "gradlew tasks"
                 //sh "./gradlew build"
             }
