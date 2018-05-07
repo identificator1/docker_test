@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Pretest') {
             steps {
-                echo 'Local hostname is"
+                echo 'Local hostname is'
                 sh "hostname"
             }
         }
