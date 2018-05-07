@@ -24,15 +24,6 @@ RUN dpkg --add-architecture i386 && \
     apt-get update -y && \
     apt-get install -y lib32z1 libc6:i386 libncurses5:i386 libstdc++6:i386 expect
     
-####
-USER ${user}
-####
-
-ENV AGENT_WORKDIR=${AGENT_WORKDIR}
-RUN mkdir /home/${user}/.jenkins && mkdir -p ${AGENT_WORKDIR}
-VOLUME /home/${user}/.jenkins
-VOLUME ${AGENT_WORKDIR}
-WORKDIR /home/${user}
 ENV GRADLE_VERSION 4.4
 ENV ANDROID_SDK_VERSION 3859397
 ENV ANDROID_SDK_PATH /usr/local/bin/android-sdk
@@ -63,5 +54,12 @@ RUN rm -rf /var/lib/apt/lists/* && \
     apt-get autoremove -y && \
     apt-get clean
 
+####
 USER ${user}:${user}
+####
+ENV AGENT_WORKDIR=${AGENT_WORKDIR}
+RUN mkdir /home/${user}/.jenkins && mkdir -p ${AGENT_WORKDIR}
+VOLUME /home/${user}/.jenkins
+VOLUME ${AGENT_WORKDIR}
+WORKDIR /home/${user}
 ENV JAVA_OPTS="-Xmx8192m"
