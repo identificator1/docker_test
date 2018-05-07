@@ -22,7 +22,6 @@ ENV AGENT_WORKDIR=${AGENT_WORKDIR} RUN mkdir /home/${user}/.jenkins && mkdir -p 
 VOLUME /home/${user}/.jenkins
 VOLUME ${AGENT_WORKDIR}
 WORKDIR /home/${user}
-RUN echo I'm here
 ENV GRADLE_VERSION 4.4
 ENV ANDROID_SDK_VERSION 3859397
 ENV ANDROID_SDK_PATH /usr/local/bin/android-sdk
