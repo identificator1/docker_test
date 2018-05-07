@@ -15,13 +15,13 @@ LABEL Description="This is a base image, which provides the Jenkins agent execut
 ARG VERSION=3.20 
 ARG AGENT_WORKDIR=/home/${user}/agent 
 RUN curl --create-dirs -sSLo /usr/share/jenkins/slave.jar https://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/${VERSION}/remoting-${VERSION}.jar \
-  && chmod 755 /usr/share/jenkins \
-  && chmod 644 /usr/share/jenkins/slave.jar
+  && chmod 755 /usr/share/${user} \
+  && chmod 644 /usr/share/${user}/slave.jar
 USER ${user} ENV AGENT_WORKDIR=${AGENT_WORKDIR} RUN mkdir /home/${user}/.jenkins && mkdir -p ${AGENT_WORKDIR}
 VOLUME /home/${user}/.jenkins
 VOLUME ${AGENT_WORKDIR}
 WORKDIR /home/${user}
-
+RUN echo I'm here
 ENV GRADLE_VERSION 4.4
 ENV ANDROID_SDK_VERSION 3859397
 ENV ANDROID_SDK_PATH /usr/local/bin/android-sdk
@@ -56,5 +56,5 @@ RUN rm -rf /var/lib/apt/lists/* && \
     apt-get autoremove -y && \
     apt-get clean
 
-USER jenkins:jenkins
+USER ${user}:${user}
 ENV JAVA_OPTS="-Xmx8192m"
