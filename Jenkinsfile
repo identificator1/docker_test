@@ -5,7 +5,7 @@ pipeline {
             agent { docker 'jacekmarchwicki/android'}
             steps {
                 echo 'I am in docker'
-                sh "ls"
+                sh "hostnamectl"
             }
         } 
     }
