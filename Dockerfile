@@ -20,10 +20,10 @@ RUN curl --create-dirs -sSLo /usr/share/jenkins/slave.jar https://repo.jenkins-c
   && chmod 755 /usr/share/${user} \
   && chmod 644 /usr/share/${user}/slave.jar
 
-
-#RUN rm /var/lib/dpkg/lock
-RUN dpkg --add-architecture i386
-
+RUN dpkg --add-architecture i386 && \
+    apt-get update -y && \
+    apt-get install -y lib32z1 libc6:i386 libncurses5:i386 libstdc++6:i386 expect
+    
 ####
 USER ${user}
 ####
