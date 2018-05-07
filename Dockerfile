@@ -1,4 +1,4 @@
-FROM jacekmarchwicki/android
+FROM ubuntu:18.04
 
 USER root
 RUN mkdir /var/log/jenkins
