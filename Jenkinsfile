@@ -11,6 +11,7 @@ pipeline {
             steps {
                 echo 'I am in docker'
                 sh "hostname"
+                sh "./gradlew test"
             }
         } 
     }
