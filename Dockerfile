@@ -37,8 +37,6 @@ ENV GRADLE_VERSION 4.4
 ENV ANDROID_SDK_VERSION 3859397
 ENV ANDROID_SDK_PATH /usr/local/bin/android-sdk
 ENV ANDROID_API_LEVELS "platforms;android-19" "platforms;android-20" "platforms;android-21" "platforms;android-22" "platforms;android-23" "platforms;android-24" "platforms;android-25" "platforms;android-26" "platforms;android-27"
-RUN apt-get update -y
-RUN apt-get install -y lib32z1 libc6:i386 libncurses5:i386 libstdc++6:i386 expect
 
 COPY bin /usr/local/bin
 RUN chmod 755 /usr/local/bin/docker-android-sdk-install
