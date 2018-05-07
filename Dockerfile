@@ -29,7 +29,7 @@ VOLUME /var/jenkins_home
 # see https://github.com/docker/docker/issues/8331
 ENV JENKINS_UC https://updates.jenkins.io
 ENV JENKINS_UC_EXPERIMENTAL=https://updates.jenkins.io/experimental
-RUN chown -R ${user} "$JENKINS_HOME" /usr/share/jenkins/ref
+
 
 ####
 
