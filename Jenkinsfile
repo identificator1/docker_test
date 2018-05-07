@@ -7,7 +7,7 @@ pipeline {
             }
         }
         stage('Build') {
-            agent { docker 'jacekmarchwicki/android'}
+            agent { dockerfile true }
             steps {
                 echo 'I am in docker'
                 sh "hostname"
