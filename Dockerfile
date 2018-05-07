@@ -29,6 +29,7 @@ ENV ANDROID_SDK_VERSION 3859397
 ENV ANDROID_SDK_PATH /usr/local/bin/android-sdk
 ENV ANDROID_API_LEVELS "platforms;android-19" "platforms;android-20" "platforms;android-21" "platforms;android-22" "platforms;android-23" "platforms;android-24" "platforms;android-25" "platforms;android-26" "platforms;android-27"
 
+FROM /
 COPY bin /usr/local/bin
 RUN chmod 755 /usr/local/bin/docker-android-sdk-install
 RUN mkdir -p ${ANDROID_SDK_PATH}
