@@ -1,6 +1,9 @@
 pipeline {
     agent { label 'docker'}
     stages {
+        stage('Pretest') {
+            sh "pwd"
+        }
         stage('Build') {
             agent { docker 'jacekmarchwicki/android'}
             steps {
