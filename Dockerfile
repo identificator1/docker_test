@@ -31,7 +31,7 @@ ENV ANDROID_API_LEVELS "platforms;android-19" "platforms;android-20" "platforms;
 
 #FROM /
 #COPY bin /usr/local/bin
-RUN chmod 755 /usr/local/bin/docker-android-sdk-install
+#RUN chmod 755 /usr/local/bin/docker-android-sdk-install
 RUN mkdir -p ${ANDROID_SDK_PATH}
 
 RUN wget https://dl.google.com/android/repository/sdk-tools-linux-${ANDROID_SDK_VERSION}.zip && \
