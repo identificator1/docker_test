@@ -17,7 +17,7 @@ pipeline {
             }
         } 
         stage('Build using CMD') {
-            steps {
+            //steps {
                 docker.image('ruby:2.3.1').inside {
                     stage("Install Bundler") {
                         sh "gem install bundler --no-rdoc --no-ri"
@@ -26,7 +26,7 @@ pipeline {
                         sh "bundle install"
                     }
                 }
-            } 
+            //} 
         }
     }
 }
