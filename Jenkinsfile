@@ -13,15 +13,20 @@ pipeline {
             steps {
                 sh "pwd && ls"
                 sh "rm -rf intro_android_demo"
-                sh "git clone https://github.com/codepath/intro_android_demo && cd intro_android_demo"
+                sh "git clone https://github.com/codepath/intro_android_demo && cd intro_android_demo && whoami && ls"
                 //sh "./gradlew tasks"
             }
         } 
         stage('Build using CMD') {
-            agent { docker { image 'temp:latest' } }
-            steps {
-                sh "gem install bundler --no-rdoc --no-ri"
-                sh "bundle install"
+            agent {
+                docker {
+                    image 'temp:latest'
+                    label 'templ'
+                    args  '-v /tmp:/tmp'}
+                }
+                steps {
+                    sh "ls"
+                }
             }
         }
     }
