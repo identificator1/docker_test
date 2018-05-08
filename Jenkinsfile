@@ -14,7 +14,6 @@ pipeline {
                 sh "hostname"
                 sh "rm -rf intro_android_demo"
                 sh "git clone https://github.com/codepath/intro_android_demo && cd intro_android_demo"
-                sh "/opt/android-sdk-linux/android list sdk -a -e"
                 sh "gradlew tasks"
                 //sh "./gradlew build"
             }
