@@ -17,17 +17,15 @@ pipeline {
             }
         } 
         stage('Build using CMD') {
-            //steps {
+            steps {
                 docker.image('ruby:2.3.1').inside {
-                    stage("Install Bundler") {
-                        sh "gem install bundler --no-rdoc --no-ri"
-                    }
-                    stage("Use Bundler to install dependencies") {
-                        sh "bundle install"
-                    }
+                    sh "gem install bundler --no-rdoc --no-ri"
+                    sh "bundle install"
                 }
-            //} 
+            } 
+        }
+        stage('Build using CMD') {
+            step([$class: 'WsCleanup'])
         }
     }
-    step([$class: 'WsCleanup'])
 }
