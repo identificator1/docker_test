@@ -7,6 +7,7 @@ ARG group=jenkins
 ARG uid=1000
 ARG gid=1000
 
+RUN groupadd -r ${user} && useradd --no-log-init -r -g ${user} ${user}
 RUN mkdir /var/log/${user}
 RUN mkdir /var/cache/${user}
 RUN chown -R ${user}:${user} /var/log/${user}
