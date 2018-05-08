@@ -3,6 +3,7 @@ FROM ubuntu:18.04
 USER root:root
 
 RUN apt-get update && apt-get install -y git curl && rm -rf /var/lib/apt/lists/*
+RUN apt-get install -y wget
 
 ARG user=jenkins
 ARG group=jenkins
