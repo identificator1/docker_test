@@ -17,7 +17,7 @@ pipeline {
             }
         } 
         stage('Build using CMD') {
-            agent { image 'ruby:2.3.1' }
+            docker { image 'ruby:2.3.1' }
             steps {
                 sh "gem install bundler --no-rdoc --no-ri"
                 sh "bundle install"
