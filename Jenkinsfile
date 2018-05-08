@@ -5,7 +5,7 @@ pipeline {
             steps {
                 echo 'Local hostname is'
                 sh "hostname"
-                sh "docker build . -t temp:latest"
+                //sh "docker build . -t temp:latest"
             }
         }
         stage('Build using plugin') {
