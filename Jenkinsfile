@@ -17,12 +17,10 @@ pipeline {
             }
         } 
         stage('Build using CMD') {
+            agent { image 'ruby:2.3.1' }
             steps {
-                docker.image('ruby:2.3.1').inside {
-                    sh "gem install bundler --no-rdoc --no-ri"
-                    sh "bundle install"
-                }
-            } 
+                sh "gem install bundler --no-rdoc --no-ri"
+                sh "bundle install"
         }
         stage('Cleanup') {
             steps {
