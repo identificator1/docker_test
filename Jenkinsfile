@@ -5,6 +5,7 @@ pipeline {
             steps {
                 echo 'Local hostname is'
                 sh "hostname"
+                sh "docker build . -t temp:latest"
             }
         }
         stage('Build using plugin') {
@@ -17,15 +18,10 @@ pipeline {
             }
         } 
         stage('Build using CMD') {
-            agent { docker { image 'ruby:2.3.1' } }
+            agent { docker { image 'temp:latest' } }
             steps {
                 sh "gem install bundler --no-rdoc --no-ri"
                 sh "bundle install"
-            }
-        }
-        stage('Cleanup') {
-            steps {
-                step([$class: 'WsCleanup'])
             }
         }
     }
