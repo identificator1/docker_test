@@ -21,6 +21,7 @@ pipeline {
             steps {
                 sh "gem install bundler --no-rdoc --no-ri"
                 sh "bundle install"
+            }
         }
         stage('Cleanup') {
             steps {
