@@ -13,7 +13,7 @@ pipeline {
             steps {
                 sh "pwd && ls"
                 sh "rm -rf intro_android_demo"
-                sh "git clone https://github.com/codepath/intro_android_demo && cd intro_android_demo && ls"
+                sh "git clone https://github.com/codepath/intro_android_demo && cd intro_android_demo && ls $$ ./gradlew test"
                 //sh "./gradlew tasks"
             }
         } 
