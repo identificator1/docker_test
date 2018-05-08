@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 
 USER root:root
 
-RUN apt-get update && apt-get install -y git curl wget && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y git curl wget default-jre #&& rm -rf /var/lib/apt/lists/*
 
 ARG user=jenkins
 ARG group=jenkins
