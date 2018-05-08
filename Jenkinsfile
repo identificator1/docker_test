@@ -17,19 +17,5 @@ pipeline {
                 //sh "./gradlew tasks"
             }
         } 
-        //stage('Build using CMD') {
-            agent {
-                docker {
-                    image 'temp:latest'
-                    label 'templ'
-                    args  '-v /tmp:/tmp'
-                }
-                stage ('Build using CMD 2') {
-                    steps {
-                        sh "ls"
-                    }
-                }
-            }
-        //}
     }
 }
