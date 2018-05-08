@@ -24,8 +24,10 @@ pipeline {
                     label 'templ'
                     args  '-v /tmp:/tmp'
                 }
-                steps {
-                    sh "ls"
+                stage ('Build using CMD 2') {
+                    steps {
+                        sh "ls"
+                    }
                 }
             }
         }
