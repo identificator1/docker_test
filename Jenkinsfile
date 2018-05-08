@@ -24,8 +24,10 @@ pipeline {
                 }
             } 
         }
-        stage('Build using CMD') {
-            step([$class: 'WsCleanup'])
+        stage('Cleanup') {
+            steps {
+                step([$class: 'WsCleanup'])
+            }
         }
     }
 }
