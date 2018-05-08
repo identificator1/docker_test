@@ -22,7 +22,7 @@ pipeline {
                 docker {
                     image 'temp:latest'
                     label 'templ'
-                    args  '-v /tmp:/tmp'}
+                    args  '-v /tmp:/tmp'
                 }
                 steps {
                     sh "ls"
