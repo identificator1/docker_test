@@ -25,5 +25,4 @@ RUN . /etc/profile
 RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | /opt/android-sdk-linux/tools/android update sdk --no-ui --filter platform-tools,android-24,build-tools-24.0.1,tools,extra-android-support,extra-android-m2repository
 RUN chmod -R 755 /opt/android-sdk-linux
 RUN dpkg --add-architecture i386
-USER ${user}:${group}
 ENV JAVA_OPTS="-Xmx8192m"
