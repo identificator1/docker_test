@@ -20,6 +20,7 @@ RUN tar zxvf /opt/android-sdk.tgz -C /opt/
 RUN rm /opt/android-sdk.tgz
 
 RUN wget https://services.gradle.org/distributions/gradle-${gradleversion}-bin.zip
+RUN pwd && ls
 RUN mkdir /opt/gradle
 RUN unzip -d /opt/gradle gradle-${gradleversion}-bin.zip
 
