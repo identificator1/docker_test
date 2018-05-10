@@ -22,7 +22,7 @@ RUN rm /opt/android-sdk.tgz
 RUN wget https://services.gradle.org/distributions/gradle-3.3-all.zip -O /opt/gradle-3.3-all.zip
 RUN mkdir /opt/gradle
 RUN unzip -d /opt/gradle /opt/gradle-3.3-all.zip
-RUN ls /opt/gradle/gradle
+RUN ls /opt/gradle
 
 ENV ANDROID_HOME android-sdk-linux
 ENV PATH $PATH:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools:/opt/gradle/gradle/bin
