@@ -1,7 +1,8 @@
 pipeline {
-    agent { label 'docker'}
+    agent any
     stages {
         stage('Pretest') {
+            agent { label 'docker'}
             steps {
                 echo 'Local hostname is'
                 sh "hostname"
