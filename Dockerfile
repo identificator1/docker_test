@@ -12,7 +12,7 @@ RUN mkdir /var/cache/${user}
 RUN chown -R ${user}:${group} /var/log/${user}
 RUN chown -R ${user}:${group} /var/cache/${user}
 
-RUN apt-get update && apt-get install -y apt-transport-https git curl wget openjdk-8-jdk
+RUN apt-get update && apt-get install -y apt-transport-https git curl wget openjdk-8-jdk && unzip
 RUN apt-get -q -y install lsof
 
 RUN wget https://dl.google.com/android/android-sdk_r24.4.1-linux.tgz -O /opt/android-sdk.tgz
@@ -20,7 +20,6 @@ RUN tar zxvf /opt/android-sdk.tgz -C /opt/
 RUN rm /opt/android-sdk.tgz
 
 RUN wget https://services.gradle.org/distributions/gradle-${gradleversion}-bin.zip
-RUN pwd && ls
 RUN mkdir /opt/gradle
 RUN unzip -d /opt/gradle gradle-${gradleversion}-bin.zip
 
